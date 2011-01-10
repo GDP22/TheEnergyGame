@@ -1,0 +1,1230 @@
+body,html {
+    font-family: calibri, verdana, sans-serif;
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+    min-height: 100%;
+    background: url('../images/new_bg.png');
+    background-color: #252525;
+    background-repeat: repeat;
+
+    /* Dirty hack: this stops users selecting stuff.
+     * Since double clicking on the canvas would highlight the
+     * ribbon. Doesn't work in IE.
+     * */
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    /*overflow:hidden;*/
+    font-family: Molengo;
+}
+
+h3 {
+    margin: 0px;
+    padding: 0px;
+}
+
+ul.providers{
+    list-style: none;
+}
+
+ul.providers li{
+    display: inline-block;
+}
+
+#maincontent {
+    min-height: 100%;
+    min-width: 50%;
+    width:100%;
+    margin: auto;
+}
+
+#container {
+    margin: 0px auto;
+    width: 66%;
+    min-height: 100%;
+    background: url('');
+    background-color: #2E2E2E;
+    background-repeat: repeat;
+    padding-left: 5px;
+    padding-right: 5px;
+    clear: both;
+    color: white;
+    border-left:1px solid white;
+    border-right:1px solid white;
+    border-bottom:1px solid white;
+}
+
+#head a {
+    margin-left: 20px;
+}
+
+.learnMore:hover, .learnMore:active, .learnMore:visited, .learnMore:link  {
+    text-decoration: none;
+    color: #1E3757;
+}
+
+#choices  li a {
+    text-decoration: none;
+    height: 20px;
+    width: 100%;
+}
+
+#choices li {
+    background-color: #444;
+}
+
+#choices .selected {
+    background-color: #AAA;
+}
+
+#gameOverScreen, #canvaswrapper, #timestatusplay, #mapShowButton {
+    display: none;
+}
+
+#chartcanvaswrapper {
+    display:none;
+    position:absolute;
+    top:120px;
+}
+
+#loadingScreen{
+    margin-top: 200px;
+    background-color: #2E2E2E;
+    color: #EDEDED;
+    margin: auto;
+    width: 100%;
+    height: 700px;
+    overflow:hidden;
+}
+
+.dialog {
+    display: none;
+    border:1px solid black;
+    top: 7%;
+    left: 50%;
+    margin-left: -450px;
+    height: 800px;
+    width: 900px;
+    position: fixed;
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    padding: 12px;
+    background-color: #2E2E2E;
+    color: #EDEDED; 
+}
+
+#logoContainer {
+    margin-left: auto;
+    margin-right: auto;
+    width:570px;
+}
+
+.logo {
+    width:565px;
+    height:154px;
+    margin-left: auto;
+    margin-right: auto;
+    top:0px;
+    display:inline-block;
+}
+
+#logoFrontOn {
+    margin-left:-570px;
+    background-image: url('../images/logoFrontOnNoGlow.png');
+    display:none;
+}
+#logoFrontOff {
+    margin-left:-570px;
+    background-image: url('../images/logoFrontOffNoGlow.png');
+}
+#logoGlow {
+    margin-left:-570px;
+    background-image: url('../images/logoGlow.png');
+    display:none;
+    opacity:0.0;
+}
+#logoBack {
+    margin-left:-570px;
+    background-image: url('../images/logoBack.png');
+}
+
+.welcomePage {
+    margin: 0px auto;
+}
+
+.welcomeLogo {
+    width:100%;
+    height:60px;
+    font-size: 36px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align:center;
+    background-image: url('../images/TheEnergyGameLogoTitleBar.png');
+    background-color: #1B86C2;
+    top:0px;
+    display:inline-block;
+}
+
+#wrapperContainer{
+    padding-top: 10px;
+    background-color: #2E2E2E;
+}
+
+
+.endLogo {
+    width:565px;
+    height:154px;
+    font-size: 36px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align:center;
+    background-image: url('../images/TheEnergyGameLogo.png');
+    top:0px;
+    display:inline-block;
+}
+
+#progressBarInfo {
+    width:400px;
+    text-align:center;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:60px;
+}
+
+#progressBar {
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#mainMenu {
+    display:none;
+    position:relative;
+    left:10000px;
+    top:70px;
+} 
+
+#geoLoc {
+    padding:20px;
+    width:880px;
+
+    height:440px;
+    overflow-y:hidden;
+
+    position: fixed;
+    top: 7%;
+    left:50000px;
+
+    margin-left: -450px;
+
+    text-shadow: white 1px 1px 1px;
+    background-color: #FFF;
+    color:#111;
+    border: 1px solid black;
+
+    border-radius:15px;
+    -moz-border-radius:15px;
+    -webkit-border-radius:15px;
+}
+
+.geoDivider {
+    border-right: 1px solid #999;
+    float: left;
+    height: 340px;
+    margin-top: 30px;
+    padding-top: 30px;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 260px;
+}
+
+#geoLocLocationFind {
+    display:none;
+}
+#geoLocMapContainer {
+}
+#geoInfo {
+    border:none;
+}
+#geoResetContainer {
+    margin-top:5px;
+    font-size:10px;
+}
+#geoFound {
+    border-top:1px solid black;
+    border-bottom:1px solid black;
+    padding:10px;
+    margin-top:30px;
+}
+#noGeoError {
+    width:500px;
+    display:none;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+}
+#geoLocText {
+    font-size:22px;
+    float:left;
+}
+#geoStart {
+    margin-top:20px;
+    margin-left:15px;
+    display:none;
+}
+#geoSkip {
+    float:right;
+}
+.geoButton {
+    width:200px;
+    border:1px solid black;
+    background-color: #999;
+    border-radius:15px;
+    -moz-border-radius:15px;
+    -webkit-border-radius:15px;
+    padding:10px;
+    color:white;
+    background-color:#333;
+    text-shadow: black -1px -1px 1px;
+    text-align:center;
+}
+.geoButton:hover {
+    border:1px solid #144501;
+    background-color:#237D00;
+}
+.geoLocButtonStyle {
+    text-shadow: black -1px -1px 1px;
+
+    -moz-box-shadow: 2px 2px 5px #888;
+    -webkit-box-shadow: 2px 2px 5px #888;
+    box-shadow: 2px 2px 5px #888;
+
+    border-radius:15px;
+    -moz-border-radius:15px;
+    -webkit-border-radius:15px;
+    width:120px;
+    height:44px;
+    border:1px solid black;
+    padding:10px;
+
+    margin-left:auto;
+    margin-right:auto;
+
+    margin-bottom:20px;
+
+    background-color:#333;
+    color:white;
+    text-align:center;
+
+    display:none;
+}
+#geoLocButton:hover {
+    border:1px solid #144501;
+    background-color:#237D00;
+}
+#geoLocButton:active {
+    background-color:#33B300;
+}
+#geoLocSepContainer {
+    padding-top:30px;
+    text-align:center;
+    padding-bottom:30px;
+    display:none;
+}
+#geoLocSepLeft {
+    border-top:1px solid black;
+    float:left;
+    margin-top: 10px;
+    width: 100px;
+}
+#geoLocSepRight {
+    border-top:1px solid black;
+    float:right;
+    margin-top: 10px;
+    width: 100px;
+}
+
+#geoLocTextEntry {
+
+}
+#geoLocTextEntryDesc {
+    font-size:16px;
+    padding-bottom:10px;
+    text-align:center;
+}
+
+#geoLocAddress{
+    background-color:#F5FBFF;
+    border:1px solid #004069;
+    width:210px;
+    font-size:30px;
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    padding-left:4px;
+    margin-left:15px;
+}
+
+.geoInfoBox {
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    padding:10px;
+    margin-bottom:20px;
+    text-align:center;
+    height:44px;
+}
+#weatherContainer {
+    border:none;
+}
+
+#weatherInfo {
+    display:none;
+}
+
+#weatherDescription {
+    display:none;
+}
+
+#googleMap {
+    width:200px;
+    height:200px;
+    display:block;
+    margin-left:auto;
+    margin-right:auto;
+}
+#googleMapWrapper {
+    background-color:#999;
+    padding:10px;
+    width:200px;
+    height:200px;
+    margin-left:auto;
+    margin-right:auto;
+    border-radius:10px;
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+}
+
+#hints {
+    padding: 10px;
+    width: 80%;
+    border: 1px solid white;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px;
+}
+
+#scroll {
+    overflow: auto;
+    font-size: small;
+}
+
+#accordion {
+    width: inherit;
+}
+
+#accordionHeader{
+    height: inherit;
+}
+
+#accordionTitle{
+    height: inherit;
+}
+
+#infocontent {
+    background-color: #2E2E2E;
+    color: white;
+    width: 100%;
+    margin:auto;
+    text-align:left;
+}
+
+#infoImageLeft {
+    float: left;
+    padding: 10px;
+    font-size:xx-small;
+    text-align: center;
+}
+
+#infoImageRight {
+    float: right;
+    padding: 10px;
+    font-size:xx-small;
+    text-align: center;
+}
+
+#sources {
+    font-size:xx-small;
+}
+
+.mainMenuEntryContainer {
+    height:100px;
+    margin-top: 10px;
+}
+
+.mainMenuEntry {
+    position:relative;
+    z-index:2;
+    color:#1E3757;
+    text-shadow: white 1px 1px 1px;
+    font-size:22px;
+    border:1px solid #D4FFFF;
+    text-align:center;
+    height:30px;
+    width: 200px;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:10px;
+
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+
+    padding:10px;
+
+    background: -webkit-gradient(linear, left top, left bottom, from(#B1F5FF), to(#7CC4FF));
+    text-decoration: none;
+}
+
+.mainMenuGlow {
+    display:none;
+    z-index:1;
+    background-image: url('../images/buttonGlow.png');
+    height: 82px;
+    width: 252px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    top:-67px;
+}
+
+#savedGameList {
+    display:none;
+}
+
+#canvas {
+    position: relative;
+    -moz-user-select: all;
+    -khtml-user-select: all;
+}
+
+#hideHelpButton:hover {
+    background-color: #00A;
+}
+
+#minicanvaswrapper {
+    position: absolute;
+    top: 340px;
+    left: -255px;
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    background-color: #CCCCCC;
+    height:312px;
+    width:240px;
+}
+
+.centered {
+    text-align: center;
+}
+
+.nopad {
+    padding: 0px
+}
+
+.nomargin {
+    margin: 0px;
+}
+
+.gameInfo, .gameInfoValue{
+    text-shadow: white 1px 1px 1px;
+    width:90%;
+}
+
+.gameInfo img, .gameInfoValue img{
+    vertical-align:middle;
+}
+
+.gameInfoValue {
+    margin-bottom: 5px;
+}
+
+.gameInfo {
+    font-weight:bold;
+    border-bottom:1px solid gray;
+}
+
+/* Good/bad, supply/demand colours */
+.good{
+    color: #264409;
+    text-shadow: #e6efc2 1px 1px 1px;
+}
+
+.medium {
+    color: #514721;
+    text-shadow: #fff6bf 1px 1px 1px;
+}
+
+.bad {
+    color: #8a1f11;
+    text-shadow: #fbe3e4 1px 1px 1px;
+
+}
+
+#rightUIContainer {
+    width: 100%;
+    padding: 5px;
+}
+
+#navbar {
+    position: relative;
+    background-color: #333;
+    height: 50px;
+    width: 100%;
+}
+
+#navbar ul {
+    margin: 0;
+    padding: 0;
+    float: left;
+    height: 100%;
+    width: 100%;
+}
+
+#navbar li {
+    display: inline;
+    line-height: 50px;
+}
+
+#navbar div.menuitem {
+    float: left;
+    height: 50px;
+    width: 20%;
+    vertical-align: middle;
+    text-align: center;
+    background-color: #2E2E2E;
+    border-bottom-color: #2E2E2E;
+    margin: auto;
+}
+
+#navbar a {
+    background-color: #1B86C2;
+    display: block;
+    text-decoration: none;
+    color: white;
+    width: 100%;
+    height: 100%;
+}
+
+#navbar a:hover {
+    border-bottom-color: #2E2E2E;
+    /*border-bottom-color: #0B75B2;    background-color: #0B75B2;*/
+    background-bottom-color: #2E2E2E;
+    background-color: #2E2E2E;
+}
+
+#loginBar {
+    background-color: #1B86C2;
+    height: 0px;
+    width: 100%;
+}
+
+#loginBar ul {
+    margin: 0;
+    padding: 0;
+    float: right;
+    height: 100%;
+    width: 100%;
+}
+
+#loginBar li {
+    display: inline;
+}
+
+#loginBar div.menuitem {
+    margin: auto;
+    margin-right: 5px;
+    position: relative;
+    top: -5px;
+    border-radius: 15px;
+    -moz-border-radius: 15px;
+    line-height: 25px;
+    width: 100px;
+    float: right;
+    vertical-align: middle;
+    text-align: center;
+    background-color: #0B75B2;
+}
+
+#loginBar a {
+    display: block;
+    text-decoration: none;
+    color: white;
+    width: 100%;
+    height: 100%;
+}
+
+#loginBar a:hover {
+    text-decoration: underline;
+}
+
+/* TODO: This is an ugly hack, only quick for demo purposses, redo */
+#loginBar ul li img {
+    float: right;
+    position: relative;
+    left: 23px;
+    height: 16px;
+    width: 16px;
+    z-index: 10;
+}
+
+/**************************************
+    TOM HACKS: HERE THERE BE DRAGONS.
+**************************************/
+#controls {
+    height:0px;
+    padding:10px;
+    margin:0px;
+    position:absolute;
+    z-index:2;
+    /*top:60px;*/
+    color:black;
+    text-shadow: white 1px 1px 1px;
+}
+
+#game_status {
+    top:0px;
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    padding:5px;
+    width:180px;
+    left:-205px;
+    position:absolute;
+    background-color: #CCCCCC;
+}
+
+#info {
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    width:200px;
+    padding:5px;
+    background-color:#CCCCCC;
+    height:620px;
+    left:1115px;
+    position:absolute;
+    top:0px;
+}
+#info > #cell {
+    display:none;
+}
+
+#info > #building > div {
+    position:relative;
+    margin-bottom:5px;
+}
+#info > #title {
+    text-align:center;
+    font-size:larger;
+}
+#info > #image {
+    height: 140px;
+    overflow: hidden;
+    width: 200px;
+    text-align:center;
+}
+#info > #building > #desc {
+    margin-bottom:20px;
+}
+#info > #building> #stats {
+    position:absolute;
+    bottom:0px;
+}
+#info > #building > #stats > * {
+    margin-bottom:5px;
+    font-weight:bold;
+}
+#info > #building > #stats > #cost {
+} 
+#info > #building > #stats > #emissions {
+}
+#info > #building > #stats > #output {
+}
+#info > #building > #stats > #lifetime {
+}
+
+#layer_controls {
+    position:absolute;
+    background-color:#CCCCCC;
+    width:300px;
+    left: 380px;
+    top:0px;
+    margin-right:auto;
+    margin-left:auto;
+    height:20px;
+    border-bottom-right-radius: 5px;
+    -moz-border-radius-bottomright:5px;
+    -webkit-border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    -moz-border-radius-bottomleft:5px;
+    -webkit-border-bottom-left-radius: 5px;
+}
+
+#time_controls {
+    left: 200px;
+}
+
+#graph_control {
+    left: 250px;
+    border-bottom-right-radius: 10px 10px;
+}
+
+#graph_control_end_game {
+    float: left
+        position: relative;
+    top: 0;
+    display: none;
+}
+
+#demolishbutton {
+    width: 90%;
+    height: 20px;
+    background-color: #2E2E2E;
+    padding: 10px;
+    text-align: center;
+    margin: auto;
+    display: none;
+}
+
+.layers {
+    margin: 0px;
+}
+
+.layers li{
+    display: inline;
+    list-style-type: none;
+    padding-left: 20px;
+    padding-right: 10px;
+}
+
+.pound , .notpound {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.notpound  {
+    color:grey;
+}
+
+
+/*
+ * Ribbon Stuff
+*/
+.building {
+    width:90px;
+    height:90px;
+}
+.highlightedBuilding {
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background-color: #369AFF;
+}
+#ribbon {
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    vertical-align: center;
+    padding: 0px;
+    position: absolute;
+    top:665px;
+    height: 90px;
+    width: 1100px;
+    background-color: #CCCCCC;
+    z-index: 2;
+    left:0px;
+}
+#ribbonList {
+    display: block;
+    position: relative;
+    margin:0px;
+    padding:0px;
+}
+
+#ribbonList li {
+    display: inline-block;
+    list-style-type: none;
+    padding-left: 10px;
+    padding-right: 10px;
+    height:90px;
+    width:90px;
+}
+
+#ingameHelpControl {
+    left: 50px;
+}
+
+#socialControls {
+    left: 150px;
+}
+
+#social p {
+    text-align: center;
+}
+
+#social {
+    height: 200px;
+    width: 500px;
+    left: 60%;
+    top: 30%;
+}
+
+#help {
+    height: auto;
+    max-height:90%;
+}
+
+/*
+ * Trajectory stuff 
+*/
+#trajectoryControl {
+    left: 100px;
+}
+
+#facebookLikeButton {
+    width: 300px;
+    height: 40px;
+    background-color: #FFF;
+    padding: 10px;
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    margin: auto;
+}
+
+#gameOverContainer {
+    width: 80%;
+    height: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    border: 1px solid white;
+    padding: 10px;
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    text-align: center;
+}
+
+
+#trajectories {
+    display:none;
+    border:1px solid red;
+    position: fixed;
+    top: 3%;
+    left: 50%;
+    color: black;
+    margin-left: -450px;
+    height: 90%;
+    width: 900px;
+    overflow-y:auto;
+
+    background-color: #FFF;
+    border: 1px solid black;
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    padding: 12px;
+    text-shadow: white 1px 1px 1px;
+}
+#trajTitle{
+    font-size: 26px;
+    text-align: center;
+    margin-bottom:20px;
+}
+#trajIntro {
+    padding:10px;
+    padding-right: 35px;
+}
+#trajIntroText{
+    margin-bottom:10px;
+}
+#trajStatsValContainer {
+    border-top:1px solid black;
+    border-bottom:1px solid black;
+    padding-top:5px;
+    padding-bottom:5px;
+}
+#trajStats{
+    float:left;
+    line-height: 50px;
+    width:550px;
+    font-size: 24px
+}
+#trajStatsPoints {
+    display: inline;
+}
+#buyTrajPoints {
+    font-size:12px;
+    border:1px solid #333;
+    display:inline-block;
+    background-repeat:no-repeat;
+    background-position:right center;
+    line-height: 50px;
+    float:right;
+    padding-left:10px;
+    padding-right:10px;
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+
+    background-color: #333;
+    color:white;
+    text-shadow: black -1px -1px 1px;
+}
+#buyTrajPoints:hover {
+    background-color: #555;
+}
+
+#trajDecList {
+    height: 400px;
+    overflow-y: scroll;
+}
+#trajFooter {
+    border-top: 1px solid black;
+    margin-top: 10px;
+}
+#trajButtonContainer {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 10px;
+    width: 100px;
+}
+#trajButton {
+    height:50px;
+    width:150px;
+}
+.trajDec{
+    margin-top:10px;
+    margin-right:10px;
+    padding:5px 10px 5px 10px;
+    border:1px solid #999;
+}
+.trajText{
+    float:left;
+    font-size:20px;
+    line-height: 45px;
+}
+.trajDecDesc{
+    border-top:1px solid #333;
+    padding:10px;
+    margin-top:10px;
+    display:none;
+}
+
+.trajValues{
+
+    float:right;
+}
+
+.trajectoryChoice, .demoChoice{
+    border: 1px solid black;
+    float: left;
+    margin-left: 20px;
+    width: 48px;
+    height: 48px;
+    text-align:center;
+    font-size:45px;
+}
+
+#trajBuy {
+    display : none;
+}
+
+#trajMoneyBox {
+    width : 20px;
+}
+
+.demoChoice {
+    border:1px solid #999;
+    color: #999;
+    line-height: 35px;
+}
+
+.chosenTrajectory{
+    background-image: url('../images/tick.png'); 
+}
+
+.controlbutton {
+    background-color: #CCC;
+    padding: 5px;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    top: 0px;
+    margin: auto;
+}
+
+
+/*
+ * Decision stuff
+*/
+#decisionControl {
+    left: 0px;
+}
+
+#decisions {
+    display:none;
+    border:1px solid red;
+    position: fixed;
+    top: 17%;
+    left: 50%;
+    color : black;
+    margin-left: -300px;
+    width: 600px;
+    background-color: #FFF;
+    border: 1px solid black;
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    padding: 12px;
+    text-shadow: white 1px 1px 1px
+}
+#newDecision {
+    display:none;
+}
+
+#decisions div {
+    margin-bottom:10px;
+}
+#decTitle {
+    font-size: 20px;
+    font-weight: bolder;
+}
+#decDesc {}
+
+#decisionMessage {
+    text-align:center;
+    font-style:italic;
+}
+
+#previousDecisions {
+    border-top:1px solid black;
+    padding-top:5px;
+}
+.prevDec{
+    border:1px solid #575757;
+    padding:5px;
+    background-color:#E0E0E0;
+    color:#575757;
+}
+.undecidedDec {
+    border:1px solid #264409;
+    background-color:#D7FFBD;
+    color: #264409;
+    text-shadow: #e6efc2 1px 1px 1px;
+}
+#decChoicesContainer {
+    padding-top: 30px;
+    padding-bottom:65px;
+    margin-left:auto;
+    margin-right:auto;
+    width:450px;
+}
+#choicesInfo {
+    width:415px;
+    margin-left:auto;
+    margin-right:auto;
+    padding:10px;
+}
+#decList {
+    padding:0 0 0 0;
+    margin:0 0 0 0;
+    list-style:none;
+    display:inline;
+}
+#decList li {
+    padding: 0 0 0 0;
+    float:left;
+    display:inline-block;
+    text-align:center;
+    margin-left:5px;
+    margin-right:5px;
+    width:100px;
+    height:60px;
+}
+#decList li div {
+    width:100px;
+    height:50px;
+    padding-top:10px;
+}
+.prevDec {}
+
+.choice{
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    border:1px solid #333;
+    background-color:#D6D6D6;
+}
+.goodChoice {
+    border:1px solid #03A12D;
+    background-color:#E3FFC4;
+}
+.badChoice {
+    border: 1px solid #A10303;
+    background-color:#FFCFCF;
+}
+.medChoice {
+    border: 1px solid #CFCD72;
+    background-color: #FFFED1;
+}
+
+#choiceButtonContainer {
+    margin-left: auto;
+    margin-right: auto;
+    width: 102px;
+}
+
+#choiceButton {
+    width:100px;
+    height:50px;
+}
+
+/*
+ * Stuff for jqModal
+*/
+.jqmWindow {
+    display: none;
+}
+
+.jqmOverlay { background-color: #000; }
+
+/* Background iframe styling for IE6. Prevents ActiveX bleed-through (<select> form elements, etc.) */
+* iframe.jqm {position:absolute;top:0;left:0;z-index:-1;
+              width: expression(this.parentNode.offsetWidth+'px');
+              height: expression(this.parentNode.offsetHeight+'px');
+}
+
+/* Fixed posistioning emulation for IE6
+     Star selector used to hide definition from browsers other than IE6
+     For valid CSS, use a conditional include instead */
+* html .jqmWindow {
+    position: absolute;
+    top: expression((document.documentElement.scrollTop || document.body.scrollTop) + Math.round(17 * (document.documentElement.offsetHeight || document.body.clientHeight) / 100) + 'px');
+}
+
+/* Spinner
+----------------------------------*/
+.ui-spinner { position:relative; display: inline-block; overflow: hidden; padding: 0; vertical-align: middle; height: 1.8em; }
+.ui-spinner-input { border: none; background: none; padding: 0; margin: .2em 0; vertical-align: middle; float: left; margin-left: .4em; margin-right: 22px; }
+.ui-spinner-button { width: 16px; height: 50%; font-size: .5em; padding: 0; margin: 0; z-index: 100; text-align: center; vertical-align: middle; position: absolute; cursor: default; display: block; overflow: hidden; right: 0; }
+.ui-spinner a.ui-spinner-button { border-top: none; border-bottom: none; border-right: none; } /* more specificity required here to overide default borders */
+.ui-spinner .ui-icon { position: absolute; margin-top: -8px; top: 50%; left: 0; } /* vertical centre icon */
+.ui-spinner-up { top: 0; }
+.ui-spinner-down { bottom: 0; }
+
+/* TR overrides */
+div.ui-spinner { background: none; }

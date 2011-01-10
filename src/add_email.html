@@ -1,0 +1,10 @@
+<lift:surround with="default" at="content">
+    <p>We were unable to retrieve all of the required information. Please enter below</p>
+    <lift:AddEmail.add form="POST">
+        Username : <entry:usrName />
+        <br/>
+        Email Address :<entry:email_address />
+        <br/>
+        <entry:submit />
+    </lift:AddEmail.add>
+</lift:surround>

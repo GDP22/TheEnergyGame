@@ -1,0 +1,142 @@
+#!/usr/bin/env python
+
+# This script will read in the file powerstations.csv, look up the location,
+# capacity, age, and type of each station, use google maps to get lat and lng
+# values for the station, then generate a JS file to populate all the game
+# cells with the stations in order to provide a starting map.
+
+# Note to self:
+# 0: company name
+# 1: station name
+# 2: type
+# 3: capacity
+# 4: year
+
+try:
+    import json
+except ImportError:
+    # Uni machines have Python 2.4, json module is 2.6+
+    import simplejson as json
+
+from urllib import urlopen, quote_plus
+from csv import reader
+from time import sleep
+from random import randint
+
+dataReader = reader(open('powerstations.csv'))
+failfile = open("fail.txt", "w")
+
+outfile = open('startingpositions.js', 'w')
+outfile.write("(function () {\n")
+outfile.write("var x = 0; var y = 0, thisPos = {};\n")
+outfile.write("EG.initialiseUKBuildings = function(map) {\n")
+
+def getMapsURL(name):
+    """
+    Return the URL needed to get google maps to geocode this place.
+    """
+    return "http://maps.googleapis.com/maps/api/geocode/json?address=" + \
+        quote_plus(name + ",UK") + "&sensor=false"
+
+
+i = 0
+
+# Allow buildings to be coal power plants or wind farms.
+typeLookup = {
+        "coal"      : "EG.GameObjectNames.CoalPowerStation",
+        "wind"      : "EG.GameObjectNames.WindTurbine",
+        "hydro"     : "EG.GameObjectNames.HydroElectric",
+        "nuclear"   : "EG.GameObjectNames.Nuclear",
+        "gas"       : "EG.GameObjectNames.NaturalGas",
+        "CCGT"      : "EG.GameObjectNames.CCGT"
+}
+
+lifetimeLookup = {
+        "coal"      : 12 * 40,
+        "wind"      : 12 * 25,
+        "hydro"     : 12 * 100,
+        "nuclear"   : 12 * 60,
+        "gas"       : 12 * 50,
+        "CCGT"      : 12 * 100
+}
+
+for row in dataReader:
+    name = row[1]
+    
+    if name != "":
+        # There's some rubbish in the file that we need to ignore
+        type = row[2]
+
+        # Remove any commas in number formatting
+        capacity = row[3].replace(",","")
+
+        # Convert from mW to mWh
+        capacity = float(capacity)
+
+        # then to tWh
+        capacity /= 1000000
+
+        # then to month
+        capacity *= 24 * 365
+        capacity /= 12
+
+        year = row[4].strip()
+        print year
+
+        # Some years have seasons in them for some reason eg 2003 (3)
+        if(year.find(" ") != -1):
+            year = year[0:year.find(" ")]
+
+        # Get the lat/lng of the location from google
+
+        # Just in case these places appear more than once, try to find one that's
+        # in the UK
+        url = getMapsURL(name)
+        response = urlopen(url)
+        data =  json.load(response)
+        response.close()
+
+        # Google Maps enforces a rate limit, limit to 3 requests a second.
+        sleep(0.4)
+
+        try:
+            lat = data["results"][0]["geometry"]["location"]["lat"]
+            lng = data["results"][0]["geometry"]["location"]["lng"]
+            outfile.write("    thisPos = EG.latlngToIndex(%f,%f,map);\n" % (lat, lng))
+            outfile.write("    thisX = thisPos.x;\n")
+            outfile.write("    thisY = thisPos.y;\n")
+
+            # Default to coal power plant
+            number = typeLookup["coal"]
+            remainingYears = lifetimeLookup["coal"] - (2010 - int(year));
+            try:
+                number = typeLookup[type]
+            except KeyError:
+                pass
+
+            try:
+                remainingYears = lifetimeLookup[type] - (2010 - int(year))
+            except KeyError:
+                pass
+
+            # The data contains years that are very similar to each other so
+            # give them a random offset
+            remainingYears += randint(-120, 120)
+
+            # Build a power station for now
+            outfile.write("    if(thisX >= 0 && thisX < map.length && thisY >= 0 && thisY < map[0].length) {\n")
+            outfile.write("        obj = EG.infoLibrary.get(" + str(number) +").fn(thisX * 60, thisY * 60, true," + str(capacity) + ", " + str(remainingYears) + ");\n")
+            outfile.write("        map[thisX][thisY].addItem(obj);\n")
+            outfile.write("    }\n\n")
+            i += 1
+            print "Writing number " + str(i)
+
+        except IndexError:
+            failfile.write("%s %s\n" % (name, data))
+            print data
+            print name
+
+failfile.close()
+outfile.write("}\n")
+outfile.write("}) ();")
+outfile.close()

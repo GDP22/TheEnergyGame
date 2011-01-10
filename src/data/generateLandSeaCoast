@@ -1,0 +1,114 @@
+#!/usr/bin/env python
+
+# This script will read the file "map.jpg" in the current directory and will
+# generate a javascript script that can be placed in the preload_queue after
+# the map is generate and will assign land/sea/coast status to each tile in the
+# map based on the pixel data for that grid cell in the image.
+
+from PIL import Image
+
+# Open the image, convert to luminance channel only
+mapImage = Image.open("map.bmp")
+cellHeight = 60
+cellWidth = 60
+
+numXCells = int(mapImage.size[0] / cellWidth)
+numYCells = int(mapImage.size[1] / cellWidth)
+
+# Initialise a map of cells that is Y modal and sets everything to "S" (sea)
+cells = [["S" for xCell in xrange(numXCells)] for yCell in xrange(numYCells)]
+
+GROUND = 0
+WATER = 1
+COAST = 2
+IRELAND = 3
+
+def formatTerrain(y, x, type):
+    outfile.write('EG.model.map.gameMap[%d][%d].type = %d;\n' % (x, y, type))
+
+# For each map cell, read the histogram of the image data
+for xCell in xrange(0, numXCells):
+    for yCell in xrange(0, numYCells):
+
+        bound = (xCell * cellWidth, cellHeight * yCell, (xCell + 1) * cellWidth, (yCell + 1) * cellHeight)
+        croppedRegion = mapImage.crop(bound)
+
+        histogram = croppedRegion.histogram()
+        R = histogram[0:256]
+        G = histogram[256:512]
+        B = histogram[512:768]
+
+        # If it's 100% blue then it's water
+        if sum(B[200:]) >= 3600:
+            print "Found water!"
+            cells[yCell][xCell] = WATER
+        # If it contains any green then it's southern ireland and we should not
+        # be able to build on it
+        elif sum(G[200:]) > 0:
+            print "Found ireland!"
+            cells[yCell][xCell] = IRELAND 
+        # If it's almost all (75%) red then it's land
+        elif sum(R[200:]) >= 3000:
+            print "Found ground cell!"
+            cells[yCell][xCell] = GROUND
+        # Otherwise it's coastline
+        else:
+            print "Found coast!"
+            # Otherwise it's coast
+            cells[yCell][xCell] = COAST
+
+# Ensure that there is coast around the entire edge of the UK. While a flooding
+# algorithm would be suitable here it would take longer to write and would have
+# more potential for bugs, while iterating over X and Y should be sufficient.
+
+# Track across X
+for y in xrange(len(cells)):
+    currentType = cells[y][0]
+    for x in xrange(1, len(cells[0])):
+        thisType = cells[y][x]
+
+        # If they were in WATER and are now in GROUND, set this tile to COAST.
+        if currentType == WATER and thisType == GROUND:
+            cells[y][x] = COAST
+
+        # If they were in GROUND and are now in WATER, set the previous tile to
+        # COAST.
+        if currentType == GROUND and thisType == WATER:
+            cells[y][x -1] = COAST
+
+        currentType = thisType
+
+# Track across Y
+for x in xrange(len(cells[0])):
+    currentType = cells[0][x]
+    for y in xrange(1, len(cells)):
+        thisType = cells[y][x]
+
+        # If they were in WATER and are now in GROUND, set this tile to COAST.
+        if currentType == WATER and thisType == GROUND:
+            cells[y][x] = COAST
+
+        # If they were in GROUND and are now in WATER, set the previous tile to
+        # COAST.
+        if currentType == GROUND and thisType == WATER:
+            cells[y -1][x] = COAST
+
+        currentType = thisType
+
+
+# Write the output file
+
+# Get a file to write out to
+outfile = open("terraindata.js", "w")
+
+outfile.write("(function () {\n")
+outfile.write("EG.populateTerrainData = function () {\n")
+
+for rowNo in xrange(len(cells)):
+    for colNo in xrange(len(cells[0])):
+        type = cells[rowNo][colNo]
+        formatTerrain(rowNo, colNo, cells[rowNo][colNo])
+
+outfile.write("}}) ();")
+
+outfile.close()

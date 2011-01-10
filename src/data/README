@@ -1,0 +1,2 @@
+This folder contains things relating to the data that the frontend needs to use
+but that shouldn't be web accessible.

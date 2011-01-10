@@ -1,0 +1,183 @@
+#!/usr/bin/env python
+
+# This script will read in a file containing UK census data (regional
+# populations), use the Google Maps Geocoding API to find a latitude and
+# longitude position for those areas, then write a static JS file that can be
+# added to preload_queue after map that populates the map cells with the
+# correct populations (so we don't have to do it every time the map loads).
+
+# NOTE: API documentation here:
+# http://code.google.com/apis/maps/documentation/geocoding/
+
+try:
+    import json
+except ImportError:
+    # Uni machines have Python 2.4, json module is 2.6+
+    import simplejson as json
+
+from urllib import urlopen, quote_plus
+from csv import reader
+from time import sleep
+
+# Note:
+# file format is (in order of column)
+# 0 name
+# 1 mid 2008 population
+# 2 live births
+# 3 deaths
+# 4 change due to natural (local population) causes
+# 5 change due to migration
+# 6 total change in population from 2008
+# 7 mid 2009 population
+# Note: units are in thousands
+
+class Place(object):
+    def __init__(self, name, pop, popChange):
+        """
+        Initialise a place with a name, population, and a change in population
+        per year value.
+        """
+        self.name = name
+        self.pop = pop
+        self.popChange = popChange
+
+    def addBounds(self, SWLat, SWLng, NELat, NELng):
+        """
+        Give the city a radius based on it's bounds
+        """
+        self.SWLat = SWLat
+        self.SWLng = SWLng
+        self.NELat = NELat
+        self.NELng = NELng
+
+    def addLatLng(self, lat, lng):
+        """
+        Give this place a latitude and longitude
+        """
+        self.lat = lat
+        self.lng = lng
+
+    def getJSConstructor(self):
+        """
+        Return a string containing the JS constructor for this city.
+        """
+        try:
+            result = " " * 8 + 'new City("' + \
+                self.name.strip() + '"' \
+                ',' + \
+                str(float(self.lat)) + \
+                ',' + \
+                str(float(self.lng)) + \
+                ',' + \
+                str(float(self.pop)) + \
+                ',' + \
+                str(float(self.SWLat)) + \
+                ',' + \
+                str(float(self.SWLng)) + \
+                ',' + \
+                str(float(self.NELat)) + \
+                ',' + \
+                str(float(self.NELng)) + \
+                ',' + \
+                str(float(self.popChange)) + \
+                '),'
+            return result
+        except:
+            raise
+            print "damnit"
+            return ""
+
+
+    def getMapsURL(self):
+        """
+        Return the URL needed to get google maps to geocode this place.
+        """
+        return "http://maps.googleapis.com/maps/api/geocode/json?address=" + \
+            quote_plus(self.name + ",UK") + "&sensor=false"
+
+
+# Read in the CSV data
+#dataReader = reader(open('csvdata.csv'))
+dataReader = reader(open('cities'))
+
+places = []
+
+for row in dataReader:
+#    name = row[0]
+#    popChange = row[6]
+#    pop = row[7]
+    name = row[0]
+    pop = row[1]
+    popChange = 0.1
+    places.append(Place(name, pop, popChange))
+
+for place in places:
+    print "Progress: " + str(places.index(place)) + "/" + str(len(places))
+
+    # Just in case these places appear more than once, try to find one that's
+    # in the UK
+    url = place.getMapsURL()
+    response = urlopen(url)
+    data =  json.load(response)
+    response.close()
+
+    # Google Maps enforces a rate limit, limit to 3 requests a second.
+    sleep(0.33)
+
+    try:
+        lat = data["results"][0]["geometry"]["location"]["lat"]
+        lng = data["results"][0]["geometry"]["location"]["lng"]
+        bounds = data["results"][0]["geometry"]["bounds"]
+        SWLat = bounds["southwest"]["lat"]
+        SWLng = bounds["southwest"]["lng"]
+        NELat = bounds["northeast"]["lat"]
+        NELng = bounds["northeast"]["lng"]
+
+        place.addBounds(SWLat, SWLng, NELat, NELng)
+        place.addLatLng(lat, lng)
+    except IndexError:
+        print data
+
+
+# Now that we have all the data, write out a JS file that will perform the
+# operation for us.
+outfile = open('generatePopulations.js', 'w')
+
+prestring = """(function () {
+    // Store a list of cities with a position, radius, name, and population. At
+    // runtime we can calculate which cells are wrapped in each city's
+    // population radius and add the population to those areas. This assumes
+    // all cities are circular.
+    function City(name, lat, lng, population, radius, popGrowth) {
+       this.name = name;
+        this.lng = lng;
+        this.lat = lat;
+        this.population = population;
+        this.radius = radius;
+        this.popGrowth = growth;
+    }
+
+    var populationData = [
+"""
+
+poststring = """
+    ];
+
+    }
+})();
+"""
+
+outfile.write(prestring)
+
+# Loop over the cities printing them out
+
+for place in places[0:-2]:
+    outfile.write(place.getJSConstructor() + "\n")
+
+# So that we don't have any JS errors, the last city can't end with a ","
+#last = place[-1].getJSConstructor()[0:-2]
+#outfile.write(last)
+
+outfile.write(poststring)
+
+outfile.close()

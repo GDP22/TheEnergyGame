@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml">
+    <head>
+            <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+            <meta content="The Energy Game" name="description" />
+            <meta content="energy, carbon-emissions, 2050 pathways" name="keywords" />
+            <title>The Energy Game</title>
+            <link href='http://fonts.googleapis.com/css?family=Molengo&subset=latin' rel='stylesheet' type='text/css'>
+
+            <link href="styles/jquery-ui.css" media="screen" type="text/css" rel="stylesheet" />
+            <link href="styles/main.css" media="screen" type="text/css" rel="stylesheet" />
+            <script type="text/javascript" src="js/jquery-1.4.4.min.js" id="jquery"></script>
+            <script type="text/javascript" src="js/jquery-ui-1.8.6.custom.min.js"></script>
+            <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    </head>
+    <body>
+        <script
+            src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php"
+            type="text/javascript">
+        </script>
+
+        <div id="container">
+            <div id="loginBar">
+                <ul class="menuitems">
+                    <li><div class="menuitem"><a href="http://gdp.owst.staxapps.net/share">Share</a></div></li>
+                    <li><div class="menuitem"><a href="http://gdp.owst.staxapps.net/login">Login</a></div></li>
+                </ul>
+                You are not logged in
+            </div>
+            <div id="headerImage"></div>
+            <div id="navbar">
+                <ul class="menuitems">
+                    <li><div class="menuitem"><a href="http://gdp.owst.staxapps.net/index">Home</a></div></li>
+                    <li><div class="menuitem">Play</div></li>
+                    <li><div class="menuitem"><a href="http://gdp.owst.staxapps.net/scores">Scores</a></div></li>
+                    <li><div class="menuitem"><a href="http://gdp.owst.staxapps.net/information">Information</a></div></li>
+                    <li><div class="menuitem"><a href="http://gdp.owst.staxapps.net/about">About</a></div></li>
+                </ul>
+            </div>
+            <div id="maincontent">
+                <div id="gameOverScreen">
+                    <div id="gameOverContainer">
+                        <div class="endLogo"></div>
+                        <p>GAME OVER!</p>
+                        <p>You scored:</p>
+                        <p id="finalScore"></p>
+                        <p>If you would like to tell your friends how well you did
+                        over Facebook or Twitter, click <a href="#"
+                            onclick="EG.UI.showSocial()">here!</a></p>
+                        <p>
+                        If you would like to see the graph of your progress,
+                        click <a href="#" id="game_over_show_chart">here</a>
+
+                        </p>
+                        <div id="facebookLikeButton">
+                            <iframe
+                                src="http://www.facebook.com/widgets/like.php?href=http://gdp.owst.staxapps.net/play"
+                                scrolling="no" frameborder="0" style="border:none; height:30px"></iframe>
+                        </div>
+                    </div>
+                </div>
+                <div id="loadingScreen">
+                    <div id="logoContainer">
+                        <div id="logoDummy" class="logo"></div>
+                        <div id="logoBack" class="logo"></div>
+                        <div id="logoGlow" class="logo"></div>
+                        <div id="logoFrontOff" class="logo"></div>
+                        <div id="logoFrontOn" class="logo"></div>
+                    </div>
+
+                    <div id="progressBar">
+                        <div id="progressBarInfo">Loading...</div>
+                        <div id="loadingProgressBar"></div>
+                    </div>
+                    <div id="mainMenu">
+                        <div class="mainMenuEntryContainer">
+                            <div id="startGameButton" class="mainMenuEntry">Start New Game</div>
+                            <div id="test" class="mainMenuGlow"></div>
+                        </div>
+<!--                        <div class="mainMenuEntryContainer">
+                            <div id="LoadGameButton" class="mainMenuEntry">Load Game</div>
+                            <div class="mainMenuGlow"></div>-->
+                        <div class="mainMenuEntryContainer">
+                            <div id="LoadGameButton" class="mainMenuEntry">
+                                <a class="learnMore" href="information.html">Learn More</a>
+                            </div>
+                            <div class="mainMenuGlow"></div>
+                        </div>
+                        <div id="hints"></div>
+                    </div>
+                </div>
+                <div id="canvaswrapper">
+                    <div id="controls">
+                        <div id="decisionControl" class="controlbutton">
+                            <img src="images/decisions.png"></img>
+                        </div>
+                        <div id="trajectoryControl" class="controlbutton">
+                            <img src="images/traj.png"></img>
+                        </div>
+                        <div id="ingameHelpControl" class="controlbutton">
+                            <img src="images/help.png"/>
+                        </div>
+<!--                        <div id="layer_controls">
+                            <ul class="layers">
+                                <li id="normalOverlay" class="layer"><span>Normal</span></li>
+                                <li id="resourcesOverlay" class="layer"><span>Resources</span></li>
+                            </ul>
+                        </div>-->
+                        <div class="controlbutton" id="socialControls">
+                            <img src="images/facebookicon.png"/>
+                        </div>
+                        <div id="time_controls" class="controlbutton">
+                            <img id="timestatuspaused" src="images/paused.png" />
+                            <img id="timestatusplay" src="images/running.png" />
+                        </div>
+                        <div id="graph_control" class="controlbutton">
+                            <img id="graphShowButton" src="images/graph.png" />
+                            <img id="mapShowButton" src="images/maptiny.png" />
+                        </div>
+                       <div id="game_status">
+                            <div class="gameInfo"><img src="images/battery_24.png" /> Monthly Energy: </div>
+                            <div class="gameInfoValue"><span class="good"
+                                    id="energy_supply">Supply: Calculating...</span><br /><span class="bad" id="energy_demand">Demand: Calculating...</span>
+                                <br /><span class="good" id="total_emissions">Emissions: Calculating...</span>
+                            </div>
+                            <div class="gameInfo"><img src="images/love_24.png" /> Happiness: </div>
+                            <div class="gameInfoValue" id="happiness"><img src="images/med_24.png"/><span class="bad"> Calculating...</span></div>
+                            <div class="gameInfo"><img src="images/money_24.png" /> Money: </div>
+                        <div class="gameInfoValue"><span class="good" id="money">Calculating...</span></div>
+                            <div class="gameInfo"><img src="images/calendar_24.png" /> Current Month: </div>
+                            <div class="gameInfoValue"><span class="good" id="date">01/2010</span></div>
+                            <div class="gameInfo"><img src="images/score_24.png" /> Score: </div>
+                            <div class="gameInfoValue"><span class="good" id="score">0</span></div>
+                        </div>
+                        <div id="minicanvaswrapper">
+                            <canvas id="minimapcanvas" width="240" height="312"></canvas>
+                        </div>
+                        <div id="info">
+                            <div id='title'></div>
+                            <div id='image'></div>
+
+                            <div id='building'>
+                                <div id='desc'></div>
+                                <div id='stats'>
+                                    <div id='cost'>Build Cost:
+                                    <div class='value' id ="buildCost">Calculating...</div>
+                                    </div>
+                                <div id='recurCost'>Net Monthly Cost:
+                                    <div class='value' id ="recCost">Calculating...</div>
+                                </div>
+                                    <div id='emissions'>Emissions
+                                        <div class='value'>Calculating...</div>
+                                    </div>
+                                    <div id='output'>Output:
+                                        <div class='value'>Calculating...</div>
+                                    </div>
+                                    <div id='lifetime'>Remaining Lifetime:
+                                        <div class='value'>Calculating...</div>
+                                    </div>
+                                    <div id='demolishbutton'>Demolish Building!</div>
+                                </div>
+                            </div>
+                            <div id='cell'>
+                                <div id='population'>Population:
+                                    <div class='value'>
+                                    </div>
+                                </div>
+                                <div id='happiness'>Happiness:
+                                    <div class='value'>
+                                    </div>
+                                </div>
+                                <div id='miscinfo'>Misc Info:
+                                    <div class='value'>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!-- info-->
+
+                        <div id="ribbon">
+                            <ul id="ribbonList">
+                            </ul>
+                        </div>
+                    </div> <!-- controls-->
+
+                    <canvas id="canvas" width="1100" height="650"></canvas>
+               </div> <!-- canvaswrapper-->
+               <div id="chartcanvaswrapper">
+                    <div id="game_over_hide_chart" class="controlbutton">
+                        <img id="graphShowButton" src="images/graph.png" />
+                        <img id="mapShowButton" src="images/maptiny.png" />
+                    </div>
+                    <canvas id="chartcanvas" width="1100" height="650"></canvas>
+                </div>
+            </div>
+        </div>
+        <div id="geoLoc">
+            <div id="geoLocText">Personalise your game using your location!</div>
+            <div id="geoSkip" class="geoButton">Skip and Start Game</div>
+            <div style="clear:both;"></div>
+            <div id="geoLocLocationFind" class="geoDivider">
+                <div id="geoLocButton" class="geoLocButtonStyle">Find me automatically!</div>
+                <div id="geoLocSepContainer">
+                    <div id="geoLocSepLeft"></div>OR<div id="geoLocSepRight"></div>
+                </div>
+                <div id="geoLocTextEntry">
+                    <div id="geoLocTextEntryDesc">Start typing your postcode:</div>
+                    <input id="geoLocAddress" type="text"></input>
+                </div>
+            </div>
+
+            <div id="geoLocMapContainer" class="geoDivider">
+                <div id="locatingInfo" class="medChoice geoInfoBox">
+                </div>
+                <div id="googleMapWrapper">
+                    <div id="googleMap"></div>
+                </div>
+                <div id="geoResetContainer">If this isn't you, either type your full address or press Skip.</div>
+            </div>
+            <div id="weatherContainer" class="geoDivider">
+                <div id="weatherInfo" class="medChoice geoInfoBox">
+                </div>
+                <div id="weatherDescription"></div>
+                <div id="geoStart" class="geoButton">Start Game</div>
+            </div>
+            <div id="noGeoError" class="medChoice geoInfoBox">
+                Sorry, we can't establish a connection to the geolocation serivce.
+                <br/>Press the button above to begin.
+            </div>
+        </div>
+        <div class="jqmWindow" id="decisions">
+            <div id="decisionMessage">
+                You have no decisions to make at the moment.
+            </div>
+            <div id="newDecision">
+                <div id='decTitle'></div>
+                <div id='decDesc'></div>
+                <div id='decChoices'>
+                    <div id="decChoicesContainer">
+                        <ul id='decList'>
+                            <li><div id="firstChoice" class="choice">Yes</div></li>
+                            <li><div id="secondChoice" class="choice">No</div></li>
+                            <li><div id="thirdChoice" class="choice">Something else</div></li>
+                            <li><div id="fourthChoice" class="choice">A fourth thing</div></li>
+                        </ul>
+                    </div>
+                    <div id="choicesInfo">
+                        <div id="choicesText">Blah blah blah</div>
+                        <div id="choiceButtonContainer">
+                            <button id="choiceButton">Do this</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="previousDecisions">
+                Previous Decisions
+                <div id='prevDecList'>
+                </div>
+            </div>
+        </div>
+            <div id="help" class="dialog jqmWindow">
+                <p><b>Building Objects</b></p>
+                <ul>
+                    <li>You can view the types of building that are available
+                    to build by hovering over them at the bottom page.</li>
+                    <li>To build an object, click on it and then hover the
+                    mouse over the map. You can pan around the map by dragging
+                    the left mouse button and the places that you can build on
+                    will be highlighted in green. Left click to place the
+                    object once you've selected an appropriate place.</li>
+                </ul>
+                <p><b>Navigation</b></p>
+                <ul>
+                    <li>You can navigate around the map by clicking and
+                    dragging the left mouse.</li>
+                    <li>You can click or drag around the minimap to move around
+                    as well.</li>
+                </ul>
+                <p><b>Tips</b></p>
+                <ul>
+                    <li>In order to get a high score you must make sure that
+                    you keep your supplied energy above your demand, keep a
+                    positive bank balance, and don't build things too close to
+                    populated areas!</li>
+                    <li>Buildings can degrade so you need to be prepared!</li>
+                </ul>
+                <div class="mainMenuEntryContainer">
+                    <div id="hideHelpButton" class="mainMenuEntry">Close</div>
+                        <div id="test" class="mainMenuGlow"></div>
+                </div>
+            </div>
+            <div id="social" class="dialog jqmWindow">
+                <p class="heading"><b>Tell a Friend!</b></p>
+                <p>
+                Click on the links below to tell your friends about The
+                Energy Game via Facebook or Twitter!
+                </p>
+                <p>
+                <a href="#" onclick="publish(); return false;">
+                        <img src="images/facebooktiny.png" />
+                    </a>
+                </p>
+                <p>
+                    <a id="socialTwitterButton" href="http://twitter.com/share"
+                        target="blank" class="twitter-share-button"
+                        data-text="I played The Energy Game!" data-count="horizontal" data-via="TheEnergyGame">
+                    Twitter
+                    </a>
+                    <script type="text/javascript"
+                        src="http://platform.twitter.com/widgets.js"></script>
+                </p>
+            </div>
+
+        <div class="jqmWindow" id='trajectories'>
+            <div id='trajTitle'>Trajectories</div>
+            <div id='trajIntro'>
+                <div id='trajIntroText'>
+                There are 9 key areas which you need to decide what direction we want to be heading in.
+            Click each one to view more information about it, then selected which choice you want to make,
+            the choices further to the right will result in a greater emission cut, but will likely result in an unhappy population.
+            <br/><br/>
+            Also, you have limited Trajectory Points, the greater the emission cut, the greater the cost in Trajectory Points. Spend them wisely.
+            <br/><br/>
+            You can earn new points through increasing population happiness, or just by spending a lot of money on one. Up to you.
+                </div>
+                <div id="trajStatsValContainer">
+                    <div id='trajStats'>Trajectory Points Remaining:
+                        <div id='trajStatsPoints'>0</div>
+                        <div id="buyTrajPoints">
+                            BUY TRAJECTORY POINTS
+                        </div>
+                    </div>
+                    <div class="trajValues">
+                        <div class='demoChoice'>1</div>
+                        <div class='demoChoice'>2</div>
+                        <div class='demoChoice'>3</div>
+                        <div class='demoChoice'>4</div>
+                        <div style="clear:both;"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <div id='trajBuy'>
+                        Here you can trade money for trajectory points.<br/>
+                        Each trajectory point is <span id='trajPointCost'></span><br/>
+                        You currently have <span id='trajMoneyStatus'></span>
+                        <div id='trajMoneyInfo'>
+                            <input type='text' id='trajMoneyBox'/> <input type='submit' id='trajMoneyButton' value="Buy"/>
+                        </div>
+                    </div>
+                </div>
+                <div style="clear:both;"></div>
+            </div>
+            <div id='trajDecList'></div>
+            <div id='trajFooter'>
+                <div id="trajButtonContainer">
+                    <button id="trajButton">Submit</button>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+        /*
+         * READ ME BEFORE ADDING ANYTHING HERE.
+         *
+         * Hello anyone, if you're considering adding some JS here:
+         * DON'T.
+         *
+         * Do it in the right place from the beginning!
+         *  UI stuff in ui.js
+         *  handlers in handlers.js (called from ui.js if necessary)
+         *
+         * If you're still unclear as to whether you should add code
+         * here, consult the following flowchart:
+         *
+         *              +----------------+
+         *              | Do you want to |
+         *              | add code here? |----------+
+         *              +----------------+          |
+         *                     |                    |
+         *                    YES                  NO
+         *                     |                    |
+         *                    \/                    |
+         *              +----------------+          |
+         *              | DON'T ADD CODE |<---------+
+         *              |      HERE      |
+         *              +----------------+
+         */
+
+        function loadSavedGame(id){
+            var gameid = $("#"+id).attr("gameid");
+            var uid = $("#"+id).attr("uid");
+            $.ajax({
+                url : "user/saved",
+                data : {
+                    userID : uid,
+                    game_name : gameid
+                },
+                //TODO: mofidy so that data is put in correct locations/tags/anywhere useful
+                success : function (data) {
+                    $("#loadgame").html(data);
+                },
+                cache : true,
+                type : 'GET'
+            });
+        }
+
+        $(document).ready(function() {
+            ////
+            // Loading Game setup
+            ////
+            $("#loadingProgressBar").progressbar();
+
+
+            // Begin loading JS as soon as the page loads.
+            $.getScript('js/controller.js', function() {
+                window.EG.init(
+                    document.getElementById('canvas'),
+                    document.getElementById('minimapcanvas'),
+                    document.getElementById('chartcanvas')
+                );
+            });
+        });
+        </script>
+
+        <div id="notLoggedInDialog"></div>
+        <script type="text/javascript">
+            var uservoiceOptions = {
+              /* required */
+              key: 'theenergygame',
+              host: 'theenergygame.uservoice.com', 
+              forum: '95605',
+              showTab: true,  
+              /* optional */
+              alignment: 'left',
+              background_color:'#f00', 
+              text_color: 'white',
+              hover_color: '#06C',
+              lang: 'en'
+            };
+
+            function _loadUserVoice() {
+              var s = document.createElement('script');
+              s.setAttribute('type', 'text/javascript');
+              s.setAttribute('src', ("https:" == document.location.protocol ? "https://" : "http://") + "cdn.uservoice.com/javascripts/widgets/tab.js");
+              document.getElementsByTagName('head')[0].appendChild(s);
+            }
+            _loadSuper = window.onload;
+            window.onload = (typeof window.onload != 'function') ? _loadUserVoice : function() { _loadSuper(); _loadUserVoice(); };
+        </script>
+    </body>
+</html>
+

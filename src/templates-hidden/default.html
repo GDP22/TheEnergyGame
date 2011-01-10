@@ -1,0 +1,40 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:lift="http://liftweb.net/">
+    <head>
+        <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+        <meta content="The Energy Game" name="description" />
+        <meta content="energy, carbon-emissions, 2050 pathways" name="keywords" />
+        <title>The Energy Game</title>
+        <link href="http://fonts.googleapis.com/css?family=Molengo&amp;subset=latin" rel="stylesheet" type="text/css"/>
+        <link href="styles/main.css" media="screen" type="text/css" rel="stylesheet" />
+        <script type="text/javascript" src="js/jquery-1.4.4.min.js" id="jquery"></script>
+        <script type="text/javascript" src="js/scroll_menu.js"></script>
+        <link href="styles/jquery-ui.css" media="screen" type="text/css" rel="stylesheet" />
+        <script type="text/javascript" src="js/jquery-ui-1.8.6.custom.min.js"></script>
+    </head>
+    <body>
+        <div id="maincontent">
+            <div id="container">
+                <div id="loginBar">
+                    <ul class="menuitems">
+                        <li><div class="menuitem"><lift:Menu.item name="share" donthide="true" alt="Share with Facebook">Share</lift:Menu.item></div></li>
+                        <li><div class="menuitem"><lift:Menu.item name="loginout" donthide="true" alt="Login"></lift:Menu.item></div></li>
+                    </ul>
+                </div>
+                <div class="welcomeLogo"></div>
+                <div id="navbar">
+                    <ul class="menuitems">
+                        <li><div class="menuitem"><lift:Menu.item name="home" donthide="true" alt="Home">Home</lift:Menu.item></div></li>
+                        <li><div class="menuitem"><lift:Menu.item name="play" donthide="true" alt="Play">Play</lift:Menu.item></div></li>
+                        <li><div class="menuitem"><lift:Menu.item name="scores" donthide="true" alt="Scores">Scores</lift:Menu.item></div></li>
+                        <li><div class="menuitem"><lift:Menu.item name="information" donthide="true" alt="Information">Information</lift:Menu.item></div></li>
+                        <li><div class="menuitem"><lift:Menu.item name="about" donthide="true" alt="About">About</lift:Menu.item></div></li>
+                    </ul>
+                </div>
+                <lift:bind name="content" />
+            </div>
+        </div>
+        <div id="messages">
+            <lift:msgs/>
+        </div>
+    </body>
+</html>
